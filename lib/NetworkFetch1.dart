@@ -21,22 +21,34 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int tileSize = 0;
+
+  // Useless for now
   void _callNetwork() async {
     var url = "https://jsonplaceholder.typicode.com/todos";
     var response = await http.get(url);
     print('Response: ${response.body}');
   }
 
+  // Tiles delegate to generate dynamically
+  ListTile _buildTiles(BuildContext context, int position) {
+    return ListTile(
+      title: Text('Item $position'),
+      onTap: () {
+        print('tapped $position');
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Center(
-          child: RaisedButton(
-            child: Text("Call Network"),
-            onPressed: () => _callNetwork(),
-          ),
-        ),
+        child: ListView.builder(
+            itemCount: 5,
+            itemBuilder: (BuildContext context, int position) {
+              return _buildTiles(context, position);
+            }),
       ),
     );
   }
